@@ -35,13 +35,13 @@ export default function QRMenuPage() {
     return () => unsubscribe();
   }, []);
 
-  if (loading) return <div className="p-8 text-white">Loading QR Menus...</div>;
+  if (loading) return <div className="p-8 text-text-main">Loading QR Menus...</div>;
 
   if (totalTables === 0) {
     return (
       <div className="max-w-2xl text-center py-20">
-        <h1 className="text-3xl font-bold mb-4 text-white uppercase tracking-widest">QR Menu System</h1>
-        <p className="text-gray-400 mb-6">You haven't set up your total tables yet. Please go to the Settings page and enter the number of tables in your restaurant.</p>
+        <h1 className="text-3xl font-bold mb-4 text-text-main uppercase tracking-widest">QR Menu System</h1>
+        <p className="text-text-muted mb-6">You haven't set up your total tables yet. Please go to the Settings page and enter the number of tables in your restaurant.</p>
         <a href="/dashboard/settings" className="bg-yellow-500 hover:bg-yellow-400 text-black px-6 py-3 rounded font-bold uppercase tracking-widest transition-colors">Go to Settings</a>
       </div>
     );
@@ -53,12 +53,12 @@ export default function QRMenuPage() {
     <div className="max-w-5xl">
       <div className="flex justify-between items-end mb-8 hide-on-print">
         <div>
-          <h1 className="text-3xl font-bold text-white uppercase tracking-widest">Dine-In QR Codes</h1>
-          <p className="text-gray-400 mt-2 text-sm">Download or print these permanent QR codes and place them on your tables. Customers can scan them to place dine-in orders.</p>
+          <h1 className="text-3xl font-bold text-text-main uppercase tracking-widest">Dine-In QR Codes</h1>
+          <p className="text-text-muted mt-2 text-sm">Download or print these permanent QR codes and place them on your tables. Customers can scan them to place dine-in orders.</p>
         </div>
         <button 
           onClick={() => window.print()}
-          className="bg-gray-800 hover:bg-gray-700 text-white border border-gray-600 px-6 py-2 rounded font-bold uppercase tracking-widest transition-colors flex items-center gap-2"
+          className="bg-panel-hover hover:bg-gray-700 text-text-main border border-gray-600 px-6 py-2 rounded font-bold uppercase tracking-widest transition-colors flex items-center gap-2"
         >
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
           Print QRs
@@ -77,7 +77,7 @@ export default function QRMenuPage() {
                 Table {tableNo}
               </div>
               <img src={qrImageUrl} alt={`QR for Table ${tableNo}`} className="w-40 h-40 object-contain mb-4" crossOrigin="anonymous" />
-              <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest text-center">Scan to order</p>
+              <p className="text-text-muted text-[10px] font-bold uppercase tracking-widest text-center">Scan to order</p>
             </div>
           );
         })}

@@ -75,27 +75,27 @@ export default function Dashboard() {
     }
   };
 
-  if (loading) return <div className="p-8 text-white">Loading Dashboard...</div>;
+  if (loading) return <div className="p-8 text-text-main">Loading Dashboard...</div>;
 
   return (
     <div className="max-w-4xl font-sans">
       
       {/* Header */}
       <header className="mb-10">
-        <h1 className="text-3xl font-bold text-white uppercase tracking-widest">API Dashboard</h1>
-        <p className="text-gray-400 mt-2 text-sm">Manage your API keys and connect your restaurant website to Kalvix Nexus POS.</p>
+        <h1 className="text-3xl font-bold text-text-main uppercase tracking-widest">API Dashboard</h1>
+        <p className="text-text-muted mt-2 text-sm">Manage your API keys and connect your restaurant website to Kalvix Nexus POS.</p>
       </header>
 
       {/* Generate Key Section */}
-      <div className="bg-gray-900 border border-gray-800 p-6 rounded-xl shadow-lg mb-8">
-        <h2 className="text-xl font-bold mb-4 text-white uppercase tracking-widest">Generate New API Key</h2>
+      <div className="bg-panel border border-border-subtle p-6 rounded-xl shadow-lg mb-8">
+        <h2 className="text-xl font-bold mb-4 text-text-main uppercase tracking-widest">Generate New API Key</h2>
         <form onSubmit={handleGenerateKey} className="flex gap-4 items-start sm:items-center flex-col sm:flex-row">
           <input
             type="text"
             placeholder="Key Name (e.g. Main Website)"
             value={newKeyName}
             onChange={(e) => setNewKeyName(e.target.value)}
-            className="flex-1 bg-black border border-gray-800 rounded-md px-4 py-3 text-white focus:outline-none focus:border-yellow-500 w-full"
+            className="flex-1 bg-page border border-border-subtle rounded-md px-4 py-3 text-text-main focus:outline-none focus:border-yellow-500 w-full"
           />
           <button
             type="submit"
@@ -108,20 +108,20 @@ export default function Dashboard() {
       </div>
 
       {/* API Keys List */}
-      <div className="bg-gray-900 border border-gray-800 rounded-xl shadow-lg overflow-hidden mb-10">
-        <div className="p-6 border-b border-gray-800 bg-black">
-          <h2 className="text-xl font-bold text-white uppercase tracking-widest">Your API Keys</h2>
-          <p className="text-xs text-gray-500 mt-1">Do not share your API keys in publicly accessible areas.</p>
+      <div className="bg-panel border border-border-subtle rounded-xl shadow-lg overflow-hidden mb-10">
+        <div className="p-6 border-b border-border-subtle bg-page">
+          <h2 className="text-xl font-bold text-text-main uppercase tracking-widest">Your API Keys</h2>
+          <p className="text-xs text-text-muted mt-1">Do not share your API keys in publicly accessible areas.</p>
         </div>
         
         {apiKeys.length === 0 ? (
-          <div className="p-12 text-center text-gray-500">
+          <div className="p-12 text-center text-text-muted">
             No API keys generated yet. Create one above to connect your website.
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-gray-300">
-              <thead className="bg-gray-900 border-b border-gray-800 text-xs uppercase tracking-wider text-gray-500">
+            <table className="w-full text-left text-text-main">
+              <thead className="bg-panel border-b border-border-subtle text-xs uppercase tracking-wider text-text-muted">
                 <tr>
                   <th className="px-6 py-4 font-bold">Key Name</th>
                   <th className="px-6 py-4 font-bold">API Key</th>
@@ -129,10 +129,10 @@ export default function Dashboard() {
                   <th className="px-6 py-4 font-bold text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-800 bg-black/50">
+              <tbody className="divide-y divide-gray-800 bg-page/50">
                 {apiKeys.map((keyObj) => (
-                  <tr key={keyObj.id} className="hover:bg-gray-800/50 transition-colors">
-                    <td className="px-6 py-4 font-bold text-white">{keyObj.name}</td>
+                  <tr key={keyObj.id} className="hover:bg-panel-hover/50 transition-colors">
+                    <td className="px-6 py-4 font-bold text-text-main">{keyObj.name}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <div className="font-mono text-xs text-yellow-500 bg-yellow-500/10 px-3 py-1 rounded inline-block border border-yellow-500/20">
@@ -143,7 +143,7 @@ export default function Dashboard() {
                             navigator.clipboard.writeText(keyObj.key);
                             alert('API Key copied to clipboard!');
                           }}
-                          className="text-gray-400 hover:text-yellow-500 transition-colors p-1"
+                          className="text-text-muted hover:text-yellow-500 transition-colors p-1"
                           title="Copy API Key"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -152,7 +152,7 @@ export default function Dashboard() {
                         </button>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-400">
+                    <td className="px-6 py-4 text-sm text-text-muted">
                       {new Date(keyObj.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 text-right">
@@ -172,14 +172,14 @@ export default function Dashboard() {
       </div>
 
       {/* Developer Instructions */}
-      <div className="p-6 bg-gray-900 border border-yellow-500/30 rounded-xl shadow-[0_0_20px_rgba(212,175,55,0.05)]">
+      <div className="p-6 bg-panel border border-yellow-500/30 rounded-xl shadow-[0_0_20px_rgba(212,175,55,0.05)]">
         <h3 className="font-bold text-lg mb-2 text-yellow-500 uppercase tracking-widest flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
           </svg>
           Developer Instructions
         </h3>
-        <p className="text-sm text-gray-400 mb-4">
+        <p className="text-sm text-text-muted mb-4">
           Send orders from your public website to this POS automatically using your unique API Key.
         </p>
         
@@ -236,20 +236,20 @@ async function sendOrderToKalvixPOS(customerInfo, cartItems, totalAmount) {
               COPY FULL MESSAGE FOR DEVELOPER
             </button>
           </div>
-          <div className="bg-black border border-gray-800 p-5 rounded-md font-mono text-sm text-gray-300 overflow-x-auto shadow-inner relative">
-            <div className="text-gray-500 mb-4 whitespace-pre-wrap">
+          <div className="bg-page border border-border-subtle p-5 rounded-md font-mono text-sm text-text-main overflow-x-auto shadow-inner relative">
+            <div className="text-text-muted mb-4 whitespace-pre-wrap">
 {`### Hello Developer,
 We have integrated Kalvix Nexus POS for billing. Whenever a successful order is placed on the website, push it to our POS using the function below.`}
             </div>
             
             <div className="text-green-400 mb-1">// Replace with the unique API Key from the POS</div>
             <div>
-              <span className="text-blue-300">const</span> <span className="text-white">API_KEY</span> <span className="text-pink-400">=</span> <span className="text-yellow-200">"{apiKeys.length > 0 ? <span className="text-yellow-500 font-bold">{apiKeys[apiKeys.length - 1].key}</span> : 'YOUR_API_KEY'}"</span>;
+              <span className="text-blue-300">const</span> <span className="text-text-main">API_KEY</span> <span className="text-pink-400">=</span> <span className="text-yellow-200">"{apiKeys.length > 0 ? <span className="text-yellow-500 font-bold">{apiKeys[apiKeys.length - 1].key}</span> : 'YOUR_API_KEY'}"</span>;
             </div>
             
             <div className="text-green-400 mt-2 mb-1">// The actual domain where Kalvix Nexus POS is hosted</div>
             <div>
-              <span className="text-blue-300">const</span> <span className="text-white">POS_BASE_URL</span> <span className="text-pink-400">=</span> <span className="text-yellow-200">"https://knospos.vercel.app"</span>;
+              <span className="text-blue-300">const</span> <span className="text-text-main">POS_BASE_URL</span> <span className="text-pink-400">=</span> <span className="text-yellow-200">"https://knospos.vercel.app"</span>;
             </div>
             <br />
             <div>
@@ -267,18 +267,18 @@ We have integrated Kalvix Nexus POS for billing. Whenever a successful order is 
                     <span className="text-yellow-200">"Content-Type"</span>: <span className="text-yellow-200">"application/json"</span>
                   </div>
                   {'}'},<br/>
-                  body: <span className="text-white">JSON</span>.<span className="text-yellow-100">stringify</span>({'{'}
+                  body: <span className="text-text-main">JSON</span>.<span className="text-yellow-100">stringify</span>({'{'}
                   <div className="pl-4">
-                    customerName: customerInfo.name, <span className="text-gray-500">// e.g., "Vikram Singh"</span><br/>
-                    customerPhone: customerInfo.phone <span className="text-pink-400">||</span> <span className="text-yellow-200">""</span>, <span className="text-gray-500">// e.g., "9876543210"</span><br/>
-                    paymentMode: customerInfo.paymentMethod, <span className="text-gray-500">// e.g., "UPI", "Card", "Cash"</span><br/>
-                    totalAmount: totalAmount, <span className="text-gray-500">// e.g., 1050</span><br/><br/>
+                    customerName: customerInfo.name, <span className="text-text-muted">// e.g., "Vikram Singh"</span><br/>
+                    customerPhone: customerInfo.phone <span className="text-pink-400">||</span> <span className="text-yellow-200">""</span>, <span className="text-text-muted">// e.g., "9876543210"</span><br/>
+                    paymentMode: customerInfo.paymentMethod, <span className="text-text-muted">// e.g., "UPI", "Card", "Cash"</span><br/>
+                    totalAmount: totalAmount, <span className="text-text-muted">// e.g., 1050</span><br/><br/>
                     items: cartItems.<span className="text-yellow-100">map</span>(item <span className="text-blue-300">=&gt;</span> ({'{'}
                     <div className="pl-4">
-                      id: item.id <span className="text-pink-400">||</span> <span className="text-white">Date</span>.<span className="text-yellow-100">now</span>(),<br/>
-                      name: item.name, <span className="text-gray-500">// e.g., "Burger"</span><br/>
-                      price: <span className="text-white">Number</span>(item.price), <span className="text-gray-500">// e.g., 150</span><br/>
-                      qty: <span className="text-white">Number</span>(item.quantity) <span className="text-gray-500">// e.g., 2</span>
+                      id: item.id <span className="text-pink-400">||</span> <span className="text-text-main">Date</span>.<span className="text-yellow-100">now</span>(),<br/>
+                      name: item.name, <span className="text-text-muted">// e.g., "Burger"</span><br/>
+                      price: <span className="text-text-main">Number</span>(item.price), <span className="text-text-muted">// e.g., 150</span><br/>
+                      qty: <span className="text-text-main">Number</span>(item.quantity) <span className="text-text-muted">// e.g., 2</span>
                     </div>
                     {'}))'}
                   </div>
@@ -287,7 +287,7 @@ We have integrated Kalvix Nexus POS for billing. Whenever a successful order is 
                 {'});'}
               </div>
               {'}'} <span className="text-blue-300">catch</span> (error) {'{'}
-              <div className="pl-4 text-gray-500">// Handle Error</div>
+              <div className="pl-4 text-text-muted">// Handle Error</div>
               {'}'}
             </div>
             {'}'}

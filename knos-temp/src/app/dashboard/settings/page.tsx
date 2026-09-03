@@ -55,71 +55,71 @@ export default function SettingsPage() {
     setSaving(false);
   };
 
-  if (loading) return <div className="p-8 text-white">Loading Settings...</div>;
+  if (loading) return <div className="p-8 text-text-main">Loading Settings...</div>;
 
   return (
     <div className="max-w-2xl font-sans">
-      <h1 className="text-3xl font-bold mb-6 text-white uppercase tracking-widest">Restaurant Settings</h1>
+      <h1 className="text-3xl font-bold mb-6 text-text-main uppercase tracking-widest">Restaurant Settings</h1>
       
-      <div className="bg-gray-900 border border-gray-800 p-8 rounded-xl shadow-lg">
+      <div className="bg-panel border border-border-subtle p-8 rounded-xl shadow-lg">
         <form onSubmit={handleSave} className="space-y-6">
           
           <div>
-            <label className="block text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">Restaurant Name (For Bill Header)</label>
+            <label className="block text-sm font-bold text-text-muted uppercase tracking-widest mb-2">Restaurant Name (For Bill Header)</label>
             <input 
               type="text" 
               value={restaurantName}
               onChange={(e) => setRestaurantName(e.target.value)}
-              className="w-full bg-black border border-gray-800 rounded-md px-4 py-3 text-white focus:outline-none focus:border-yellow-500 transition-colors"
+              className="w-full bg-page border border-border-subtle rounded-md px-4 py-3 text-text-main focus:outline-none focus:border-yellow-500 transition-colors"
               placeholder="e.g. Kalvix Cafe"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">Invoice Prefix</label>
+            <label className="block text-sm font-bold text-text-muted uppercase tracking-widest mb-2">Invoice Prefix</label>
             <input 
               type="text" 
               value={invoicePrefix}
               onChange={(e) => setInvoicePrefix(e.target.value.toUpperCase())}
-              className="w-full bg-black border border-gray-800 rounded-md px-4 py-3 text-white focus:outline-none focus:border-yellow-500 font-mono transition-colors"
+              className="w-full bg-page border border-border-subtle rounded-md px-4 py-3 text-text-main focus:outline-none focus:border-yellow-500 font-mono transition-colors"
               placeholder="e.g. INV"
               required
               maxLength={6}
             />
-            <p className="text-xs text-gray-500 mt-2">This will appear before the random number, e.g., {invoicePrefix}-102938</p>
+            <p className="text-xs text-text-muted mt-2">This will appear before the random number, e.g., {invoicePrefix}-102938</p>
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">GST Percentage (%)</label>
+            <label className="block text-sm font-bold text-text-muted uppercase tracking-widest mb-2">GST Percentage (%)</label>
             <input 
               type="number" 
               value={gstPercentage}
               onChange={(e) => setGstPercentage(parseFloat(e.target.value) || 0)}
-              className="w-full bg-black border border-gray-800 rounded-md px-4 py-3 text-white focus:outline-none focus:border-yellow-500 font-mono transition-colors"
+              className="w-full bg-page border border-border-subtle rounded-md px-4 py-3 text-text-main focus:outline-none focus:border-yellow-500 font-mono transition-colors"
               placeholder="e.g. 5 or 18"
               min="0"
               max="100"
               step="0.1"
             />
-            <p className="text-xs text-gray-500 mt-2">Enter 0 if GST is not applicable.</p>
+            <p className="text-xs text-text-muted mt-2">Enter 0 if GST is not applicable.</p>
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">Total Tables (For QR Menu)</label>
+            <label className="block text-sm font-bold text-text-muted uppercase tracking-widest mb-2">Total Tables (For QR Menu)</label>
             <input 
               type="number" 
               value={totalTables}
               onChange={(e) => setTotalTables(parseInt(e.target.value) || 0)}
-              className="w-full bg-black border border-gray-800 rounded-md px-4 py-3 text-white focus:outline-none focus:border-yellow-500 font-mono transition-colors"
+              className="w-full bg-page border border-border-subtle rounded-md px-4 py-3 text-text-main focus:outline-none focus:border-yellow-500 font-mono transition-colors"
               placeholder="e.g. 10"
               min="0"
               max="100"
             />
-            <p className="text-xs text-gray-500 mt-2">Enter the total number of dine-in tables in your restaurant.</p>
+            <p className="text-xs text-text-muted mt-2">Enter the total number of dine-in tables in your restaurant.</p>
           </div>
 
-          <div className="pt-4 border-t border-gray-800">
+          <div className="pt-4 border-t border-border-subtle">
             <button 
               type="submit"
               disabled={saving}

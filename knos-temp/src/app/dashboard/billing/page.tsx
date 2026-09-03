@@ -166,31 +166,31 @@ export default function ManualBilling() {
   return (
     <div className="max-w-6xl flex gap-8">
       <div className="flex-1">
-        <h1 className="text-3xl font-bold mb-6 text-white hide-on-print">Generate Manual Bill</h1>
+        <h1 className="text-3xl font-bold mb-6 text-text-main hide-on-print">Generate Manual Bill</h1>
         
-        <div className="bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-800 hide-on-print mb-6">
-          <h2 className="text-lg font-bold text-white uppercase tracking-widest mb-4">Customer & Bill Details</h2>
+        <div className="bg-panel p-6 rounded-xl shadow-lg border border-border-subtle hide-on-print mb-6">
+          <h2 className="text-lg font-bold text-text-main uppercase tracking-widest mb-4">Customer & Bill Details</h2>
           <div className="grid grid-cols-4 gap-4 mb-4">
             <div>
-              <label className="block text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Customer Name</label>
-              <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} className="block w-full px-3 py-2 border border-gray-700 bg-black rounded-md text-white focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all" placeholder="e.g. Rahul" />
+              <label className="block text-sm font-bold text-text-muted uppercase tracking-widest mb-1">Customer Name</label>
+              <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} className="block w-full px-3 py-2 border border-border-subtle bg-page rounded-md text-text-main focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all" placeholder="e.g. Rahul" />
             </div>
             <div>
-              <label className="block text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Phone (Optional)</label>
-              <input type="text" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} className="block w-full px-3 py-2 border border-gray-700 bg-black rounded-md text-white focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all" placeholder="9876543210" />
+              <label className="block text-sm font-bold text-text-muted uppercase tracking-widest mb-1">Phone (Optional)</label>
+              <input type="text" value={customerPhone} onChange={(e) => setCustomerPhone(e.target.value)} className="block w-full px-3 py-2 border border-border-subtle bg-page rounded-md text-text-main focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all" placeholder="9876543210" />
             </div>
             <div>
-              <label className="block text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Invoice No.</label>
+              <label className="block text-sm font-bold text-text-muted uppercase tracking-widest mb-1">Invoice No.</label>
               <div className="flex shadow-sm">
-                <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-700 bg-gray-800 text-yellow-500 text-sm font-bold">
+                <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-border-subtle bg-panel-hover text-yellow-500 text-sm font-bold">
                   {invoicePrefix}-
                 </span>
-                <input type="text" value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} className="flex-1 block w-full px-3 py-2 border border-gray-700 bg-black rounded-none rounded-r-md text-white focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all" placeholder="102938" />
+                <input type="text" value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} className="flex-1 block w-full px-3 py-2 border border-border-subtle bg-page rounded-none rounded-r-md text-text-main focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all" placeholder="102938" />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-bold text-gray-400 uppercase tracking-widest mb-1">Payment Mode</label>
-              <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} className="block w-full px-3 py-2 border border-gray-700 bg-black rounded-md text-white focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all">
+              <label className="block text-sm font-bold text-text-muted uppercase tracking-widest mb-1">Payment Mode</label>
+              <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} className="block w-full px-3 py-2 border border-border-subtle bg-page rounded-md text-text-main focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all">
                 <option value="Cash">Cash</option>
                 <option value="UPI">UPI</option>
                 <option value="Card">Card</option>
@@ -199,22 +199,22 @@ export default function ManualBilling() {
           </div>
         </div>
 
-        <div className="bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-800 hide-on-print flex gap-6">
+        <div className="bg-panel p-6 rounded-xl shadow-lg border border-border-subtle hide-on-print flex gap-6">
           {/* Menu Selection */}
-          <div className="flex-1 border-r border-gray-800 pr-6">
-            <h2 className="text-lg font-bold text-white uppercase tracking-widest mb-4">Select Items</h2>
+          <div className="flex-1 border-r border-border-subtle pr-6">
+            <h2 className="text-lg font-bold text-text-main uppercase tracking-widest mb-4">Select Items</h2>
             <div className="grid grid-cols-2 gap-3 max-h-96 overflow-y-auto pr-2">
               {menuItems.length === 0 ? (
-                <div className="col-span-2 text-sm text-gray-500">No items found. Upload a menu first.</div>
+                <div className="col-span-2 text-sm text-text-muted">No items found. Upload a menu first.</div>
               ) : (
                 menuItems.map(item => (
                   <button 
                     key={item.id} 
                     onClick={() => handleAddItem(item)}
-                    className="p-3 border border-gray-800 rounded text-left hover:bg-yellow-500/10 hover:border-yellow-500 transition-colors bg-black text-white group"
+                    className="p-3 border border-border-subtle rounded text-left hover:bg-yellow-500/10 hover:border-yellow-500 transition-colors bg-page text-text-main group"
                   >
-                    <div className="font-bold text-white group-hover:text-yellow-500 transition-colors">{item.name}</div>
-                    <div className="text-sm text-gray-400">₹{item.price}</div>
+                    <div className="font-bold text-text-main group-hover:text-yellow-500 transition-colors">{item.name}</div>
+                    <div className="text-sm text-text-muted">₹{item.price}</div>
                   </button>
                 ))
               )}
@@ -223,35 +223,35 @@ export default function ManualBilling() {
 
           {/* Cart / Selected Items */}
           <div className="flex-1">
-            <h2 className="text-lg font-bold text-white uppercase tracking-widest mb-4">Current Bill</h2>
+            <h2 className="text-lg font-bold text-text-main uppercase tracking-widest mb-4">Current Bill</h2>
             {selectedItems.length === 0 ? (
-              <div className="text-gray-500 text-sm">No items selected yet.</div>
+              <div className="text-text-muted text-sm">No items selected yet.</div>
             ) : (
               <div className="space-y-3">
                 {selectedItems.map(item => (
-                  <div key={item.id} className="flex justify-between items-center text-sm border-b border-gray-800 pb-2">
+                  <div key={item.id} className="flex justify-between items-center text-sm border-b border-border-subtle pb-2">
                     <div>
-                      <span className="font-bold text-white">{item.name}</span> <span className="text-yellow-500 font-bold ml-2">x{item.qty}</span>
+                      <span className="font-bold text-text-main">{item.name}</span> <span className="text-yellow-500 font-bold ml-2">x{item.qty}</span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-gray-300">₹{item.price * item.qty}</span>
+                      <span className="text-text-main">₹{item.price * item.qty}</span>
                       <button onClick={() => handleRemoveItem(item.id)} className="text-red-500 hover:text-red-400 font-bold bg-red-500/10 w-6 h-6 rounded flex items-center justify-center transition-colors">×</button>
                     </div>
                   </div>
                 ))}
-                <div className="pt-2 border-t border-gray-800">
-                  <div className="flex justify-between items-center text-sm text-gray-400 mb-1">
+                <div className="pt-2 border-t border-border-subtle">
+                  <div className="flex justify-between items-center text-sm text-text-muted mb-1">
                     <span>Subtotal</span>
                     <span>₹{subTotal}</span>
                   </div>
                   {gstPercentage > 0 && (
-                    <div className="flex justify-between items-center text-sm text-gray-400 mb-2">
+                    <div className="flex justify-between items-center text-sm text-text-muted mb-2">
                       <span>GST ({gstPercentage}%)</span>
                       <span>₹{gstAmount}</span>
                     </div>
                   )}
-                  <div className="flex justify-between items-center font-black text-lg pt-2 text-white border-t border-gray-800">
-                    <span className="uppercase tracking-widest text-sm text-gray-400">Total Amount</span>
+                  <div className="flex justify-between items-center font-black text-lg pt-2 text-text-main border-t border-border-subtle">
+                    <span className="uppercase tracking-widest text-sm text-text-muted">Total Amount</span>
                     <span className="text-yellow-500 text-2xl">₹{total}</span>
                   </div>
                 </div>
@@ -336,7 +336,7 @@ export default function ManualBilling() {
         <div className="text-center mt-6 text-xs font-bold uppercase tracking-widest">
           Thank You For Visiting!
         </div>
-        <div className="text-center mt-2 text-[9px] text-gray-500 uppercase tracking-widest">
+        <div className="text-center mt-2 text-[9px] text-text-muted uppercase tracking-widest">
           Powered by Kalvix Nexus POS
         </div>
       </div>

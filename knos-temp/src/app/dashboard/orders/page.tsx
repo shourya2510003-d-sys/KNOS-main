@@ -30,19 +30,19 @@ export default function OrdersPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-black uppercase tracking-widest text-white">Order Engine</h1>
-          <p className="text-gray-400 mt-1 text-sm tracking-widest uppercase">Track and create orders</p>
+          <h1 className="text-3xl font-black uppercase tracking-widest text-text-main">Order Engine</h1>
+          <p className="text-text-muted mt-1 text-sm tracking-widest uppercase">Track and create orders</p>
         </div>
-        <div className="flex gap-2 p-1 bg-black rounded border border-gray-800">
+        <div className="flex gap-2 p-1 bg-page rounded border border-border-subtle">
           <button 
             onClick={() => setActiveTab('tracker')}
-            className={`px-4 py-2 font-bold text-xs uppercase tracking-widest rounded transition-colors ${activeTab === 'tracker' ? 'bg-gray-800 text-white' : 'text-gray-500 hover:text-white'}`}
+            className={`px-4 py-2 font-bold text-xs uppercase tracking-widest rounded transition-colors ${activeTab === 'tracker' ? 'bg-panel-hover text-text-main' : 'text-text-muted hover:text-text-main'}`}
           >
             Tracker
           </button>
           <button 
             onClick={() => setActiveTab('manual')}
-            className={`px-4 py-2 font-bold text-xs uppercase tracking-widest rounded transition-colors ${activeTab === 'manual' ? 'bg-gray-800 text-white' : 'text-gray-500 hover:text-white'}`}
+            className={`px-4 py-2 font-bold text-xs uppercase tracking-widest rounded transition-colors ${activeTab === 'manual' ? 'bg-panel-hover text-text-main' : 'text-text-muted hover:text-text-main'}`}
           >
             Manual Entry
           </button>
@@ -55,24 +55,24 @@ export default function OrdersPage() {
             const currentIndex = getStatusIndex(order.status);
             
             return (
-              <div key={order.id} className="bg-gray-900 border border-gray-800 rounded-xl p-6 flex flex-col gap-6 hover:border-gray-700 transition-colors">
+              <div key={order.id} className="bg-panel border border-border-subtle rounded-xl p-6 flex flex-col gap-6 hover:border-border-subtle transition-colors">
                 
                 <div className="flex justify-between items-start">
                   <div>
                     <h2 className="text-2xl font-black tracking-widest">{order.id}</h2>
                     <p className="text-xs font-bold uppercase tracking-widest text-yellow-500">{order.source} • {order.time}</p>
-                    <div className="mt-2 text-sm text-gray-400">
+                    <div className="mt-2 text-sm text-text-muted">
                       {order.items.map(i => `${i.qty}x ${i.name}`).join(', ')}
                     </div>
                   </div>
-                  <div className="text-xl font-bold bg-black px-4 py-2 rounded-lg border border-gray-800">
+                  <div className="text-xl font-bold bg-page px-4 py-2 rounded-lg border border-border-subtle">
                     ₹{order.total}
                   </div>
                 </div>
 
                 {/* Progress Bar UI */}
                 <div className="relative pt-8 pb-2">
-                  <div className="absolute top-10 left-0 right-0 h-1 bg-gray-800 rounded -z-10"></div>
+                  <div className="absolute top-10 left-0 right-0 h-1 bg-panel-hover rounded -z-10"></div>
                   <div 
                     className="absolute top-10 left-0 h-1 bg-yellow-500 rounded -z-10 transition-all duration-500" 
                     style={{ width: `${(currentIndex / (statusFlow.length - 1)) * 100}%` }}
@@ -87,7 +87,7 @@ export default function OrdersPage() {
                         <div key={status} className="flex flex-col items-center gap-2 -mt-4 w-16">
                           <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-colors ${
                             isCurrent ? 'bg-yellow-500 border-yellow-500 text-black shadow-[0_0_15px_rgba(212,175,55,0.5)]' :
-                            isCompleted ? 'bg-gray-700 border-yellow-500 text-yellow-500' : 'bg-black border-gray-700 text-gray-700'
+                            isCompleted ? 'bg-gray-700 border-yellow-500 text-yellow-500' : 'bg-page border-border-subtle text-gray-700'
                           }`}>
                             {isCompleted && !isCurrent ? (
                               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
@@ -97,7 +97,7 @@ export default function OrdersPage() {
                               <span className="text-xs font-black">{i + 1}</span>
                             )}
                           </div>
-                          <span className={`text-[10px] font-bold uppercase tracking-widest text-center ${isCurrent ? 'text-yellow-500' : isCompleted ? 'text-gray-400' : 'text-gray-700'}`}>
+                          <span className={`text-[10px] font-bold uppercase tracking-widest text-center ${isCurrent ? 'text-yellow-500' : isCompleted ? 'text-text-muted' : 'text-gray-700'}`}>
                             {status}
                           </span>
                         </div>
@@ -114,7 +114,7 @@ export default function OrdersPage() {
 
       {activeTab === 'manual' && (
         <div className="grid grid-cols-3 gap-6">
-          <div className="col-span-2 bg-gray-900 border border-gray-800 rounded-xl p-6">
+          <div className="col-span-2 bg-panel border border-border-subtle rounded-xl p-6">
             <h2 className="text-lg font-bold uppercase tracking-widest text-yellow-500 mb-6">Quick Add Items</h2>
             <div className="grid grid-cols-3 gap-4">
                {[
@@ -125,40 +125,40 @@ export default function OrdersPage() {
                  { name: 'Soda', price: 120 },
                  { name: 'Salad', price: 250 },
                ].map(item => (
-                 <button key={item.name} className="bg-black border border-gray-800 p-4 rounded-lg hover:border-yellow-500 hover:text-yellow-500 transition-colors text-left flex flex-col justify-between h-24">
+                 <button key={item.name} className="bg-page border border-border-subtle p-4 rounded-lg hover:border-yellow-500 hover:text-yellow-500 transition-colors text-left flex flex-col justify-between h-24">
                    <span className="font-bold">{item.name}</span>
-                   <span className="text-xs font-mono text-gray-500">₹{item.price}</span>
+                   <span className="text-xs font-mono text-text-muted">₹{item.price}</span>
                  </button>
                ))}
             </div>
             
-            <div className="mt-6 border-t border-gray-800 pt-6">
-              <input type="text" placeholder="Search menu items..." className="w-full bg-black border border-gray-800 rounded p-3 text-sm focus:outline-none focus:border-yellow-500 transition-colors" />
+            <div className="mt-6 border-t border-border-subtle pt-6">
+              <input type="text" placeholder="Search menu items..." className="w-full bg-page border border-border-subtle rounded p-3 text-sm focus:outline-none focus:border-yellow-500 transition-colors" />
             </div>
           </div>
 
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 flex flex-col">
-             <h2 className="text-lg font-bold uppercase tracking-widest text-white mb-6">Current Ticket</h2>
-             <div className="flex-1 overflow-y-auto mb-4 border-b border-gray-800 pb-4">
+          <div className="bg-panel border border-border-subtle rounded-xl p-6 flex flex-col">
+             <h2 className="text-lg font-bold uppercase tracking-widest text-text-main mb-6">Current Ticket</h2>
+             <div className="flex-1 overflow-y-auto mb-4 border-b border-border-subtle pb-4">
                 <div className="flex justify-between items-center text-sm mb-3">
                   <span className="font-bold">1x Burger</span>
-                  <span className="text-gray-400">₹350</span>
+                  <span className="text-text-muted">₹350</span>
                 </div>
                 <div className="flex justify-between items-center text-sm mb-3">
                   <span className="font-bold">2x Soda</span>
-                  <span className="text-gray-400">₹240</span>
+                  <span className="text-text-muted">₹240</span>
                 </div>
              </div>
              <div>
-                <div className="flex justify-between text-gray-400 text-sm mb-2"><span>Subtotal</span><span>₹590</span></div>
-                <div className="flex justify-between text-gray-400 text-sm mb-4"><span>Tax (5%)</span><span>₹29.5</span></div>
+                <div className="flex justify-between text-text-muted text-sm mb-2"><span>Subtotal</span><span>₹590</span></div>
+                <div className="flex justify-between text-text-muted text-sm mb-4"><span>Tax (5%)</span><span>₹29.5</span></div>
                 <div className="flex justify-between text-xl font-black text-yellow-500 mb-6"><span>Total</span><span>₹619.5</span></div>
                 
                 <div className="space-y-3">
                   <button className="w-full bg-yellow-500 text-black font-bold py-3 rounded uppercase tracking-wider hover:bg-yellow-400 transition-colors">
                     Place Order
                   </button>
-                  <button className="w-full bg-gray-800 text-white font-bold py-3 rounded uppercase tracking-wider hover:bg-gray-700 transition-colors">
+                  <button className="w-full bg-panel-hover text-text-main font-bold py-3 rounded uppercase tracking-wider hover:bg-gray-700 transition-colors">
                     Save Draft
                   </button>
                 </div>

@@ -31,18 +31,18 @@ export default function BillHistoryPage() {
     return () => unsubscribe();
   }, []);
 
-  if (loading) return <div className="text-white p-8">Loading history...</div>;
+  if (loading) return <div className="text-text-main p-8">Loading history...</div>;
 
   return (
     <>
       <div className="max-w-6xl hide-on-print">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-white">Bill History</h1>
+          <h1 className="text-3xl font-bold text-text-main">Bill History</h1>
         </div>
       
-      <div className="bg-gray-900 border border-gray-800 rounded-xl shadow-lg overflow-hidden">
-        <table className="w-full text-left text-gray-300">
-          <thead className="bg-black border-b border-gray-800 text-sm uppercase tracking-wider text-gray-500">
+      <div className="bg-panel border border-border-subtle rounded-xl shadow-lg overflow-hidden">
+        <table className="w-full text-left text-text-main">
+          <thead className="bg-page border-b border-border-subtle text-sm uppercase tracking-wider text-text-muted">
             <tr>
               <th className="px-6 py-4">Date</th>
               <th className="px-6 py-4">Invoice No</th>
@@ -55,14 +55,14 @@ export default function BillHistoryPage() {
           <tbody className="divide-y divide-gray-800">
             {bills.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-6 py-8 text-center text-gray-500">No bills generated yet.</td>
+                <td colSpan={6} className="px-6 py-8 text-center text-text-muted">No bills generated yet.</td>
               </tr>
             ) : (
               bills.map(bill => (
-                <tr key={bill.id} className="border-b border-gray-800 hover:bg-gray-800/30 transition-colors">
+                <tr key={bill.id} className="border-b border-border-subtle hover:bg-panel-hover/30 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     {new Date(bill.date).toLocaleDateString()} <br/>
-                    <span className="text-xs text-gray-500">{new Date(bill.date).toLocaleTimeString()}</span>
+                    <span className="text-xs text-text-muted">{new Date(bill.date).toLocaleTimeString()}</span>
                   </td>
                   <td className="p-4">
                     <button 
@@ -78,20 +78,20 @@ export default function BillHistoryPage() {
                         <span className="bg-orange-500/20 text-orange-400 text-[10px] px-2 py-0.5 rounded uppercase tracking-widest border border-orange-500/30 whitespace-nowrap">{bill.source}</span>
                       )}
                       {(!bill.source || bill.source === 'Manual') && (
-                        <span className="bg-gray-700/50 text-gray-400 text-[10px] px-2 py-0.5 rounded uppercase tracking-widest border border-gray-600/50">Manual</span>
+                        <span className="bg-gray-700/50 text-text-muted text-[10px] px-2 py-0.5 rounded uppercase tracking-widest border border-gray-600/50">Manual</span>
                       )}
                     </button>
                   </td>
                   <td className="p-4">
                     <div className="font-bold">{bill.customerName}</div>
-                    <div className="text-xs text-gray-500">{bill.customerPhone}</div>
+                    <div className="text-xs text-text-muted">{bill.customerPhone}</div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="text-xs bg-gray-800 px-2 py-1 rounded">
+                    <span className="text-xs bg-panel-hover px-2 py-1 rounded">
                       {bill.items?.length || 0} items
                     </span>
                   </td>
-                  <td className="px-6 py-4 font-bold text-white">₹{Math.round(bill.total)}</td>
+                  <td className="px-6 py-4 font-bold text-text-main">₹{Math.round(bill.total)}</td>
                   <td className="px-6 py-4">
                     <span className={`px-2 py-1 rounded text-xs font-bold ${
                       bill.paymentMode === 'Cash' ? 'bg-green-500/20 text-green-400' :
@@ -110,16 +110,16 @@ export default function BillHistoryPage() {
 
       {/* Bill Details Modal */}
       {selectedBill && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-gray-900 border border-yellow-500/30 w-full max-w-lg rounded-xl shadow-[0_0_40px_rgba(212,175,55,0.1)] overflow-hidden">
-            <div className="p-6 border-b border-gray-800 flex justify-between items-center">
+        <div className="fixed inset-0 bg-page/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-panel border border-yellow-500/30 w-full max-w-lg rounded-xl shadow-[0_0_40px_rgba(212,175,55,0.1)] overflow-hidden">
+            <div className="p-6 border-b border-border-subtle flex justify-between items-center">
               <div>
-                <h3 className="text-xl font-bold text-white uppercase tracking-widest">Bill Details</h3>
-                <p className="text-sm text-gray-400 font-mono mt-1">{selectedBill.invoiceNo}</p>
+                <h3 className="text-xl font-bold text-text-main uppercase tracking-widest">Bill Details</h3>
+                <p className="text-sm text-text-muted font-mono mt-1">{selectedBill.invoiceNo}</p>
               </div>
               <button 
                 onClick={() => setSelectedBill(null)}
-                className="text-gray-400 hover:text-white bg-gray-800 hover:bg-gray-700 w-8 h-8 flex items-center justify-center rounded-full transition-colors"
+                className="text-text-muted hover:text-text-main bg-panel-hover hover:bg-gray-700 w-8 h-8 flex items-center justify-center rounded-full transition-colors"
               >
                 ✕
               </button>
@@ -128,17 +128,17 @@ export default function BillHistoryPage() {
             <div className="p-6">
               <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
                 <div>
-                  <div className="text-gray-500 uppercase tracking-wider text-xs mb-1">Customer</div>
-                  <div className="font-bold text-white uppercase">{selectedBill.customerName}</div>
-                  {selectedBill.customerPhone && <div className="text-gray-400">{selectedBill.customerPhone}</div>}
+                  <div className="text-text-muted uppercase tracking-wider text-xs mb-1">Customer</div>
+                  <div className="font-bold text-text-main uppercase">{selectedBill.customerName}</div>
+                  {selectedBill.customerPhone && <div className="text-text-muted">{selectedBill.customerPhone}</div>}
                 </div>
                 <div>
-                  <div className="text-gray-500 uppercase tracking-wider text-xs mb-1">Date & Time</div>
-                  <div className="font-bold text-white">{new Date(selectedBill.date).toLocaleDateString()}</div>
-                  <div className="text-gray-400">{new Date(selectedBill.date).toLocaleTimeString()}</div>
+                  <div className="text-text-muted uppercase tracking-wider text-xs mb-1">Date & Time</div>
+                  <div className="font-bold text-text-main">{new Date(selectedBill.date).toLocaleDateString()}</div>
+                  <div className="text-text-muted">{new Date(selectedBill.date).toLocaleTimeString()}</div>
                 </div>
                 <div>
-                  <div className="text-gray-500 uppercase tracking-wider text-xs mb-1">Payment Mode</div>
+                  <div className="text-text-muted uppercase tracking-wider text-xs mb-1">Payment Mode</div>
                   <span className={`px-2 py-1 rounded text-xs font-bold inline-block mt-1 ${
                       selectedBill.paymentMode === 'Cash' ? 'bg-green-500/20 text-green-400' :
                       selectedBill.paymentMode === 'UPI' ? 'bg-blue-500/20 text-blue-400' :
@@ -149,39 +149,39 @@ export default function BillHistoryPage() {
                 </div>
               </div>
 
-              <div className="text-gray-500 uppercase tracking-wider text-xs mb-3 border-b border-gray-800 pb-2">Order Items</div>
+              <div className="text-text-muted uppercase tracking-wider text-xs mb-3 border-b border-border-subtle pb-2">Order Items</div>
               <div className="space-y-3 mb-6 max-h-48 overflow-y-auto pr-2">
                 {selectedBill.items?.map((item: any, idx: number) => (
                   <div key={idx} className="flex justify-between items-center text-sm">
                     <div>
-                      <span className="text-white">{item.name}</span> <span className="text-gray-500 ml-2">x{item.qty}</span>
+                      <span className="text-text-main">{item.name}</span> <span className="text-text-muted ml-2">x{item.qty}</span>
                     </div>
-                    <div className="text-gray-300">₹{item.price * item.qty}</div>
+                    <div className="text-text-main">₹{item.price * item.qty}</div>
                   </div>
                 ))}
               </div>
 
-              <div className="border-t border-gray-800 pt-4">
+              <div className="border-t border-border-subtle pt-4">
                 {selectedBill.gstPercentage ? (
                   <>
-                    <div className="flex justify-between items-center text-gray-400 text-sm mb-1">
+                    <div className="flex justify-between items-center text-text-muted text-sm mb-1">
                       <span>Subtotal</span>
                       <span>₹{selectedBill.subTotal}</span>
                     </div>
-                    <div className="flex justify-between items-center text-gray-400 text-sm mb-3">
+                    <div className="flex justify-between items-center text-text-muted text-sm mb-3">
                       <span>GST ({selectedBill.gstPercentage}%)</span>
                       <span>₹{selectedBill.gstAmount}</span>
                     </div>
                   </>
                 ) : null}
-                <div className="flex justify-between items-center mt-2 pt-2 border-t border-gray-800/50">
-                  <span className="text-gray-400 uppercase tracking-widest text-sm font-bold">Total Amount</span>
+                <div className="flex justify-between items-center mt-2 pt-2 border-t border-border-subtle/50">
+                  <span className="text-text-muted uppercase tracking-widest text-sm font-bold">Total Amount</span>
                   <span className="text-2xl font-black text-yellow-500">₹{Math.round(selectedBill.total)}</span>
                 </div>
               </div>
             </div>
             
-            <div className="p-4 bg-black border-t border-gray-800 flex justify-between items-center">
+            <div className="p-4 bg-page border-t border-border-subtle flex justify-between items-center">
               <button 
                 onClick={() => {
                   // A simple trick to print just the bill details could be 
@@ -196,7 +196,7 @@ export default function BillHistoryPage() {
               </button>
               <button 
                 onClick={() => setSelectedBill(null)}
-                className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded font-bold uppercase tracking-widest text-xs transition-colors"
+                className="px-6 py-2 bg-panel-hover hover:bg-gray-700 text-text-main rounded font-bold uppercase tracking-widest text-xs transition-colors"
               >
                 Close
               </button>
@@ -279,7 +279,7 @@ export default function BillHistoryPage() {
           <div className="text-center mt-6 text-xs font-bold uppercase tracking-widest">
             Thank You For Visiting!
           </div>
-          <div className="text-center mt-2 text-[9px] text-gray-500 uppercase tracking-widest">
+          <div className="text-center mt-2 text-[9px] text-text-muted uppercase tracking-widest">
             Powered by Kalvix Nexus POS
           </div>
         </div>

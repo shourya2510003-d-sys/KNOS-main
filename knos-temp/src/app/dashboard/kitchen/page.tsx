@@ -119,34 +119,34 @@ export default function KitchenDisplayPage() {
   const getPriorityClasses = (priority: Priority, diffMins: number) => {
     if (priority === 'urgent' || diffMins >= 20) return 'border-red-500 bg-red-950/20 shadow-[0_0_15px_rgba(239,68,68,0.3)]';
     if (priority === 'high' || diffMins >= 10) return 'border-orange-500 bg-orange-950/20';
-    return 'border-gray-800 bg-black';
+    return 'border-border-subtle bg-page';
   };
 
   const getHeaderColor = (priority: Priority, diffMins: number) => {
-    if (priority === 'urgent' || diffMins >= 20) return 'bg-red-600 text-white';
+    if (priority === 'urgent' || diffMins >= 20) return 'bg-red-600 text-text-main';
     if (priority === 'high' || diffMins >= 10) return 'bg-orange-500 text-black';
-    return 'bg-gray-800 text-white';
+    return 'bg-panel-hover text-text-main';
   };
 
   return (
     <div className="h-[calc(100vh-100px)] flex flex-col">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-black uppercase tracking-widest text-white">Kitchen Display</h1>
-          <p className="text-gray-400 mt-1 text-sm tracking-widest uppercase">Live Prep Queue</p>
+          <h1 className="text-3xl font-black uppercase tracking-widest text-text-main">Kitchen Display</h1>
+          <p className="text-text-muted mt-1 text-sm tracking-widest uppercase">Live Prep Queue</p>
         </div>
         <div className="flex gap-4">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 bg-red-600 rounded-sm inline-block"></span>
-            <span className="text-xs font-bold uppercase tracking-widest text-gray-400">&gt; 20m (Urgent)</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-text-muted">&gt; 20m (Urgent)</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 bg-orange-500 rounded-sm inline-block"></span>
-            <span className="text-xs font-bold uppercase tracking-widest text-gray-400">&gt; 10m (High)</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-text-muted">&gt; 10m (High)</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 bg-gray-800 rounded-sm inline-block"></span>
-            <span className="text-xs font-bold uppercase tracking-widest text-gray-400">Normal</span>
+            <span className="w-3 h-3 bg-panel-hover rounded-sm inline-block"></span>
+            <span className="text-xs font-bold uppercase tracking-widest text-text-muted">Normal</span>
           </div>
         </div>
       </div>
@@ -167,7 +167,7 @@ export default function KitchenDisplayPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                      </svg>
                      <h2 className="text-3xl font-black text-green-500 uppercase tracking-widest">{order.orderNumber}</h2>
-                     <p className="font-bold text-white mt-2 uppercase tracking-widest">Order Ready</p>
+                     <p className="font-bold text-text-main mt-2 uppercase tracking-widest">Order Ready</p>
                      <p className="text-sm text-green-400 mt-1">Clearing from KDS...</p>
                    </div>
                 </div>
@@ -191,7 +191,7 @@ export default function KitchenDisplayPage() {
                 </div>
 
                 {/* Items List */}
-                <div className="flex-1 p-4 overflow-y-auto bg-black/40">
+                <div className="flex-1 p-4 overflow-y-auto bg-page/40">
                   <div className="space-y-3">
                     {order.items.map(item => (
                       <div 
@@ -199,12 +199,12 @@ export default function KitchenDisplayPage() {
                         onClick={() => toggleItemStatus(order.id, item.id)}
                         className={`p-3 rounded-lg border cursor-pointer transition-all ${
                           item.completed 
-                            ? 'bg-green-900/20 border-green-900 text-gray-500 line-through' 
-                            : 'bg-gray-900 border-gray-700 text-white hover:border-gray-500'
+                            ? 'bg-green-900/20 border-green-900 text-text-muted line-through' 
+                            : 'bg-panel border-border-subtle text-text-main hover:border-gray-500'
                         }`}
                       >
                         <div className="flex gap-3 items-start">
-                          <div className={`w-6 h-6 shrink-0 rounded flex items-center justify-center font-bold text-xs ${item.completed ? 'bg-green-600 text-white' : 'bg-gray-800 text-gray-400'}`}>
+                          <div className={`w-6 h-6 shrink-0 rounded flex items-center justify-center font-bold text-xs ${item.completed ? 'bg-green-600 text-text-main' : 'bg-panel-hover text-text-muted'}`}>
                             {item.qty}
                           </div>
                           <div className="flex-1">
@@ -228,20 +228,20 @@ export default function KitchenDisplayPage() {
                 </div>
 
                 {/* Footer Action */}
-                <div className="p-4 bg-black border-t border-gray-800">
+                <div className="p-4 bg-page border-t border-border-subtle">
                   <button 
                     onClick={() => markOrderReady(order.id)}
                     className={`w-full py-4 rounded-lg font-black uppercase tracking-widest text-lg transition-all ${
                       allCompleted 
                         ? 'bg-green-500 hover:bg-green-400 text-black shadow-[0_0_20px_rgba(34,197,94,0.4)] animate-bounce' 
-                        : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                        : 'bg-panel-hover text-text-muted cursor-not-allowed'
                     }`}
                     disabled={!allCompleted}
                   >
                     Mark Ready
                   </button>
                   {!allCompleted && (
-                    <p className="text-center text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-2">Complete all items first</p>
+                    <p className="text-center text-[10px] text-text-muted font-bold uppercase tracking-widest mt-2">Complete all items first</p>
                   )}
                 </div>
 
@@ -250,7 +250,7 @@ export default function KitchenDisplayPage() {
           })}
 
           {orders.length === 0 && (
-            <div className="flex-1 flex flex-col items-center justify-center text-gray-500 h-full w-full">
+            <div className="flex-1 flex flex-col items-center justify-center text-text-muted h-full w-full">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 mb-6 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
               </svg>

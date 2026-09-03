@@ -136,7 +136,7 @@ export default function APIBilling() {
     setSaving(false);
   };
 
-  if (loading) return <div className="p-8 text-white">Loading API Orders...</div>;
+  if (loading) return <div className="p-8 text-text-main">Loading API Orders...</div>;
 
   return (
     <div className="max-w-6xl flex gap-8">
@@ -144,15 +144,15 @@ export default function APIBilling() {
       {/* Left Column: API Orders List */}
       <div className="flex-1 hide-on-print">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-white">Incoming API Orders</h1>
-          <button onClick={handleSimulateOrder} className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-sm shadow">
+          <h1 className="text-3xl font-bold text-text-main">Incoming API Orders</h1>
+          <button onClick={handleSimulateOrder} className="bg-blue-600 hover:bg-blue-500 text-text-main px-4 py-2 rounded text-sm shadow">
             Simulate Website Order
           </button>
         </div>
 
-        <div className="bg-gray-900 border border-gray-800 rounded-xl shadow-lg p-6 min-h-[400px]">
+        <div className="bg-panel border border-border-subtle rounded-xl shadow-lg p-6 min-h-[400px]">
           {apiOrders.length === 0 ? (
-            <div className="text-center text-gray-500 mt-20">
+            <div className="text-center text-text-muted mt-20">
               <p>No new orders from your website.</p>
               <p className="text-sm mt-2">Click "Simulate Website Order" to see how it works.</p>
             </div>
@@ -162,13 +162,13 @@ export default function APIBilling() {
                 <div 
                   key={order.id} 
                   onClick={() => handleSelectOrder(order)}
-                  className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedOrder?.id === order.id ? 'border-yellow-500 bg-yellow-500/10' : 'border-gray-700 bg-black hover:border-gray-500'}`}
+                  className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedOrder?.id === order.id ? 'border-yellow-500 bg-yellow-500/10' : 'border-border-subtle bg-page hover:border-gray-500'}`}
                 >
                   <div className="flex justify-between items-center mb-2">
-                    <span className="font-bold text-white">{order.customerName}</span>
+                    <span className="font-bold text-text-main">{order.customerName}</span>
                     <span className="text-green-400 font-bold">₹{order.totalAmount}</span>
                   </div>
-                  <div className="text-sm text-gray-400 flex justify-between">
+                  <div className="text-sm text-text-muted flex justify-between">
                     <span>{order.items.length} items</span>
                     <span>{new Date(order.timestamp).toLocaleTimeString()}</span>
                   </div>
@@ -182,54 +182,54 @@ export default function APIBilling() {
       {/* Right Column: Pre-filled Preview & Print */}
       {selectedOrder && (
         <div className="w-96 hide-on-print flex flex-col gap-4">
-          <div className="bg-gray-900 border border-yellow-500/30 rounded-xl p-6 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
+          <div className="bg-panel border border-yellow-500/30 rounded-xl p-6 shadow-[0_0_20px_rgba(212,175,55,0.1)]">
             <h2 className="text-lg font-bold text-yellow-500 uppercase tracking-widest mb-4">Order Details</h2>
             
             <div className="mb-4 text-sm">
               <div className="flex justify-between mb-1">
-                <span className="text-gray-400">Customer:</span>
-                <span className="text-white font-bold">{selectedOrder.customerName}</span>
+                <span className="text-text-muted">Customer:</span>
+                <span className="text-text-main font-bold">{selectedOrder.customerName}</span>
               </div>
               {selectedOrder.customerPhone && (
                 <div className="flex justify-between mb-1">
-                  <span className="text-gray-400">Phone:</span>
-                  <span className="text-white font-bold">{selectedOrder.customerPhone}</span>
+                  <span className="text-text-muted">Phone:</span>
+                  <span className="text-text-main font-bold">{selectedOrder.customerPhone}</span>
                 </div>
               )}
             </div>
 
-            <div className="border-t border-gray-800 pt-4 mb-4">
-              <h3 className="text-gray-500 text-xs font-bold uppercase tracking-widest mb-3">Items</h3>
+            <div className="border-t border-border-subtle pt-4 mb-4">
+              <h3 className="text-text-muted text-xs font-bold uppercase tracking-widest mb-3">Items</h3>
               <div className="space-y-2">
                 {selectedOrder.items.map((item: any, idx: number) => (
                   <div key={idx} className="flex justify-between text-sm">
-                    <span className="text-gray-300">{item.name} <span className="text-gray-500 ml-1">x{item.qty}</span></span>
-                    <span className="text-white">₹{item.price * item.qty}</span>
+                    <span className="text-text-main">{item.name} <span className="text-text-muted ml-1">x{item.qty}</span></span>
+                    <span className="text-text-main">₹{item.price * item.qty}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="border-t border-gray-800 pt-4 mb-6">
-              <div className="flex justify-between text-sm mb-1 text-gray-400">
+            <div className="border-t border-border-subtle pt-4 mb-6">
+              <div className="flex justify-between text-sm mb-1 text-text-muted">
                 <span>Subtotal:</span>
                 <span>₹{selectedOrder.items.reduce((acc: number, item: any) => acc + (item.price * item.qty), 0)}</span>
               </div>
               {gstPercentage > 0 && (
-                <div className="flex justify-between text-sm mb-2 text-gray-400">
+                <div className="flex justify-between text-sm mb-2 text-text-muted">
                   <span>GST ({gstPercentage}%):</span>
                   <span>₹{parseFloat(((selectedOrder.items.reduce((acc: number, item: any) => acc + (item.price * item.qty), 0) * gstPercentage) / 100).toFixed(2))}</span>
                 </div>
               )}
-              <div className="flex justify-between font-bold text-lg mt-2 pt-2 border-t border-gray-700">
+              <div className="flex justify-between font-bold text-lg mt-2 pt-2 border-t border-border-subtle">
                 <span className="text-yellow-500">TOTAL:</span>
                 <span className="text-yellow-500">₹{Math.round(selectedOrder.items.reduce((acc: number, item: any) => acc + (item.price * item.qty), 0) * (1 + gstPercentage / 100))}</span>
               </div>
             </div>
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-400 mb-1">Payment Mode (From Website)</label>
-              <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} className="w-full px-3 py-2 border border-gray-700 bg-black rounded-md text-white font-bold text-yellow-500">
+              <label className="block text-sm font-medium text-text-muted mb-1">Payment Mode (From Website)</label>
+              <select value={paymentMode} onChange={(e) => setPaymentMode(e.target.value)} className="w-full px-3 py-2 border border-border-subtle bg-page rounded-md text-text-main font-bold text-yellow-500">
                 <option value="UPI">UPI (Pre-paid)</option>
                 <option value="Card">Card (Pre-paid)</option>
                 <option value="Cash">Cash on Delivery</option>
@@ -323,7 +323,7 @@ export default function APIBilling() {
           <div className="text-center mt-6 text-xs font-bold uppercase tracking-widest">
             Thank You For Ordering!
           </div>
-          <div className="text-center mt-2 text-[9px] text-gray-500 uppercase tracking-widest">
+          <div className="text-center mt-2 text-[9px] text-text-muted uppercase tracking-widest">
             Powered by Kalvix Nexus POS
           </div>
         </div>

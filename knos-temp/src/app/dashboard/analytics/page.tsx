@@ -5,16 +5,16 @@ export default function AnalyticsPage() {
     <div className="space-y-6">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-black uppercase tracking-widest text-white">AI Analytics</h1>
-          <p className="text-gray-400 mt-1 text-sm tracking-widest uppercase">Predictive Insights & Reports</p>
+          <h1 className="text-3xl font-black uppercase tracking-widest text-text-main">AI Analytics</h1>
+          <p className="text-text-muted mt-1 text-sm tracking-widest uppercase">Predictive Insights & Reports</p>
         </div>
         <div className="flex gap-2">
-          <select className="bg-gray-900 border border-gray-800 text-white text-sm rounded px-4 py-2 focus:outline-none focus:border-yellow-500">
+          <select className="bg-panel border border-border-subtle text-text-main text-sm rounded px-4 py-2 focus:outline-none focus:border-yellow-500">
             <option>Today</option>
             <option>Last 7 Days</option>
             <option>This Month</option>
           </select>
-          <button className="bg-black border border-yellow-500 text-yellow-500 hover:bg-yellow-500/10 font-bold py-2 px-4 rounded text-xs uppercase tracking-widest transition-colors">
+          <button className="bg-page border border-yellow-500 text-yellow-500 hover:bg-yellow-500/10 font-bold py-2 px-4 rounded text-xs uppercase tracking-widest transition-colors">
             Export Report
           </button>
         </div>
@@ -23,11 +23,11 @@ export default function AnalyticsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Demand Prediction */}
-        <div className="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-xl p-6 relative overflow-hidden">
+        <div className="lg:col-span-2 bg-panel border border-border-subtle rounded-xl p-6 relative overflow-hidden">
           <div className="flex justify-between items-start mb-6">
             <div>
-              <h2 className="text-lg font-bold uppercase tracking-widest text-white">Demand Prediction</h2>
-              <p className="text-xs text-gray-500 font-bold uppercase tracking-widest">Expected orders by hour</p>
+              <h2 className="text-lg font-bold uppercase tracking-widest text-text-main">Demand Prediction</h2>
+              <p className="text-xs text-text-muted font-bold uppercase tracking-widest">Expected orders by hour</p>
             </div>
             <span className="flex items-center gap-2 text-xs font-bold text-blue-400 bg-blue-900/30 px-2 py-1 rounded border border-blue-900">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
@@ -43,27 +43,27 @@ export default function AnalyticsPage() {
               <div key={i} className="flex-1 flex flex-col items-center gap-2 group">
                 <div className="relative w-full flex items-end justify-center h-full">
                   <div 
-                    className={`w-full max-w-[20px] rounded-t transition-all duration-1000 ${i === 7 || i === 8 ? 'bg-yellow-500 shadow-[0_0_15px_rgba(212,175,55,0.4)]' : 'bg-gray-800 group-hover:bg-gray-600'}`}
+                    className={`w-full max-w-[20px] rounded-t transition-all duration-1000 ${i === 7 || i === 8 ? 'bg-yellow-500 shadow-[0_0_15px_rgba(212,175,55,0.4)]' : 'bg-panel-hover group-hover:bg-gray-600'}`}
                     style={{ height: `${val}%` }}
                   ></div>
                   
                   {/* Tooltip */}
-                  <div className="absolute -top-8 bg-black border border-gray-700 text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity z-10 whitespace-nowrap">
+                  <div className="absolute -top-8 bg-page border border-border-subtle text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity z-10 whitespace-nowrap">
                     {val} orders
                   </div>
                 </div>
-                <span className="text-[10px] text-gray-500">{i + 12}h</span>
+                <span className="text-[10px] text-text-muted">{i + 12}h</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* AI Recommendations */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 flex flex-col">
-          <h2 className="text-lg font-bold uppercase tracking-widest text-white mb-6">AI Insights</h2>
+        <div className="bg-panel border border-border-subtle rounded-xl p-6 flex flex-col">
+          <h2 className="text-lg font-bold uppercase tracking-widest text-text-main mb-6">AI Insights</h2>
           
           <div className="space-y-4 flex-1">
-            <div className="bg-black border border-gray-800 p-4 rounded-lg">
+            <div className="bg-page border border-border-subtle p-4 rounded-lg">
               <div className="flex gap-3 mb-2">
                 <span className="text-yellow-500">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -72,10 +72,10 @@ export default function AnalyticsPage() {
                 </span>
                 <h3 className="font-bold text-sm">Surge Pricing Opportunity</h3>
               </div>
-              <p className="text-xs text-gray-400">High demand expected between 7PM-9PM. Consider activating dynamic pricing (+10%) for high-selling items.</p>
+              <p className="text-xs text-text-muted">High demand expected between 7PM-9PM. Consider activating dynamic pricing (+10%) for high-selling items.</p>
             </div>
 
-            <div className="bg-black border border-gray-800 p-4 rounded-lg">
+            <div className="bg-page border border-border-subtle p-4 rounded-lg">
               <div className="flex gap-3 mb-2">
                 <span className="text-red-500">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -84,10 +84,10 @@ export default function AnalyticsPage() {
                 </span>
                 <h3 className="font-bold text-sm">Inventory Warning</h3>
               </div>
-              <p className="text-xs text-gray-400">Based on current run rate, "Truffle Mushroom" will stock out in approx 4 hours.</p>
+              <p className="text-xs text-text-muted">Based on current run rate, "Truffle Mushroom" will stock out in approx 4 hours.</p>
             </div>
             
-            <div className="bg-black border border-gray-800 p-4 rounded-lg">
+            <div className="bg-page border border-border-subtle p-4 rounded-lg">
               <div className="flex gap-3 mb-2">
                 <span className="text-green-500">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -96,7 +96,7 @@ export default function AnalyticsPage() {
                 </span>
                 <h3 className="font-bold text-sm">Robot Efficiency</h3>
               </div>
-              <p className="text-xs text-gray-400">Robot fleet is operating at 92% efficiency. No bottlenecks detected.</p>
+              <p className="text-xs text-text-muted">Robot fleet is operating at 92% efficiency. No bottlenecks detected.</p>
             </div>
           </div>
         </div>
