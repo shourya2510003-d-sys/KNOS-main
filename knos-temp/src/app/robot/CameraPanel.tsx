@@ -122,6 +122,7 @@ export function CameraPanel({ ip, targetMarkerId }: CameraPanelProps) {
             parameters.delete();
           } catch (err) {
             // OpenCV not ready or error
+            console.error('OpenCV frame processing error', err);
           }
         }
       }
