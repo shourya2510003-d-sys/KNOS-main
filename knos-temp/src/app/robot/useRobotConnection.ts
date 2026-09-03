@@ -20,14 +20,16 @@ export type ConnectionStatus = 'disconnected' | 'connecting' | 'connected' | 'er
 export function useRobotConnection(ip: string | undefined) {
   const [status, setStatus] = useState<ConnectionStatus>('disconnected');
   const [telemetry, setTelemetry] = useState<Telemetry | null>(null);
-  const [lastMessageTime, setLastMessageTime] = useState<number>(0);
   const [connectionLost, setConnectionLost] = useState<boolean>(false);
 
   const wsRef = useRef<WebSocket | null>(null);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const watchdogIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const lastMessageTimeRef = useRef<number>(0);
+  const intendedDisconnectRef = useRef<boolean>(false);
 
   const cleanup = useCallback(() => {
+    intendedDisconnectRef.current = true;
     if (wsRef.current) {
       wsRef.current.close();
       wsRef.current = null;
@@ -46,7 +48,7 @@ export function useRobotConnection(ip: string | undefined) {
     try {
       const parsed: Telemetry = JSON.parse(data);
       setTelemetry(parsed);
-      setLastMessageTime(Date.now());
+      lastMessageTimeRef.current = Date.now();
       setConnectionLost(false);
       setStatus('connected');
     } catch (e) {
@@ -58,6 +60,8 @@ export function useRobotConnection(ip: string | undefined) {
     if (!ip) return;
     setStatus('connecting');
     console.log(`Starting polling fallback for ${ip}`);
+    
+    if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current);
     
     pollingIntervalRef.current = setInterval(async () => {
       try {
@@ -75,6 +79,7 @@ export function useRobotConnection(ip: string | undefined) {
   const connect = useCallback(() => {
     if (!ip) return;
     cleanup();
+    intendedDisconnectRef.current = false;
     setStatus('connecting');
 
     const wsUrl = `ws://${ip}/ws`;
@@ -90,27 +95,25 @@ export function useRobotConnection(ip: string | undefined) {
     };
 
     ws.onerror = (err) => {
-      console.warn('WebSocket error, falling back to polling', err);
-      ws.close();
+      console.warn('WebSocket error', err);
     };
 
     ws.onclose = () => {
-      // If we were connected via WS, try to reconnect or poll
-      if (status !== 'disconnected') {
+      if (!intendedDisconnectRef.current) {
         setStatus('error');
         startPolling();
       }
     };
 
-    // Watchdog to check for connection lost if telemetry hasn't updated in 3 seconds
+    if (watchdogIntervalRef.current) clearInterval(watchdogIntervalRef.current);
     watchdogIntervalRef.current = setInterval(() => {
-      if (lastMessageTime > 0 && Date.now() - lastMessageTime > 3000) {
+      if (lastMessageTimeRef.current > 0 && Date.now() - lastMessageTimeRef.current > 3000) {
         setConnectionLost(true);
         setStatus('error');
       }
     }, 1000);
 
-  }, [ip, cleanup, handleMessage, startPolling, status, lastMessageTime]);
+  }, [ip, cleanup, handleMessage, startPolling]);
 
   useEffect(() => {
     if (ip) {
@@ -123,7 +126,6 @@ export function useRobotConnection(ip: string | undefined) {
     return cleanup;
   }, [ip, connect, cleanup]);
 
-  // Reconnect attempt every 5s if in error state
   useEffect(() => {
     if (status === 'error' && ip) {
       const timer = setInterval(() => {
