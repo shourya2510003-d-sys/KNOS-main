@@ -1,300 +1,155 @@
 'use client';
-
 import { useState, useEffect } from 'react';
-import { auth, db } from '@/lib/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
-import { collection, addDoc, getDocs, deleteDoc, doc, query, where } from 'firebase/firestore';
 
-export default function Dashboard() {
-  const [apiKeys, setApiKeys] = useState<any[]>([]);
-  const [newKeyName, setNewKeyName] = useState('');
-  const [userId, setUserId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [generating, setGenerating] = useState(false);
-
+export default function OverviewDashboard() {
+  const [currentTime, setCurrentTime] = useState('');
+  
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setUserId(user.uid);
-        fetchKeys(user.uid);
-      }
-      setLoading(false);
-    });
-    return () => unsubscribe();
+    const interval = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString());
+    }, 1000);
+    return () => clearInterval(interval);
   }, []);
 
-  const fetchKeys = async (uid: string) => {
-    try {
-      const q = query(collection(db, 'api_keys'), where('userId', '==', uid));
-      const snapshot = await getDocs(q);
-      const keys = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setApiKeys(keys);
-    } catch (error) {
-      console.error("Error fetching keys:", error);
-    }
-  };
-
-  const handleGenerateKey = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!userId) return;
-
-    setGenerating(true);
-    
-    // Generate a secure looking unique key
-    const uniquePart = Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
-    const generatedKey = `knos_live_${uniquePart.toUpperCase()}`;
-    
-    const keyName = newKeyName.trim() || `API Key ${apiKeys.length + 1}`;
-
-    try {
-      const newKeyData = {
-        userId,
-        name: keyName,
-        key: generatedKey,
-        createdAt: new Date().toISOString(),
-      };
-      
-      const docRef = await addDoc(collection(db, 'api_keys'), newKeyData);
-      setApiKeys([...apiKeys, { id: docRef.id, ...newKeyData }]);
-      setNewKeyName('');
-    } catch (error) {
-      console.error('Error saving key', error);
-      alert('Failed to generate key');
-    }
-    setGenerating(false);
-  };
-
-  const deleteKey = async (id: string) => {
-    if (!confirm('Are you sure you want to revoke this API Key? Any website using it will lose access immediately.')) return;
-    
-    try {
-      await deleteDoc(doc(db, 'api_keys', id));
-      setApiKeys(apiKeys.filter((k) => k.id !== id));
-    } catch (error) {
-      alert('Error revoking key');
-    }
-  };
-
-  if (loading) return <div className="p-8 text-white">Loading Dashboard...</div>;
-
   return (
-    <div className="max-w-4xl font-sans">
-      
-      {/* Header */}
-      <header className="mb-10">
-        <h1 className="text-3xl font-bold text-white uppercase tracking-widest">API Dashboard</h1>
-        <p className="text-gray-400 mt-2 text-sm">Manage your API keys and connect your restaurant website to Kalvix Nexus POS.</p>
-      </header>
-
-      {/* Generate Key Section */}
-      <div className="bg-gray-900 border border-gray-800 p-6 rounded-xl shadow-lg mb-8">
-        <h2 className="text-xl font-bold mb-4 text-white uppercase tracking-widest">Generate New API Key</h2>
-        <form onSubmit={handleGenerateKey} className="flex gap-4 items-start sm:items-center flex-col sm:flex-row">
-          <input
-            type="text"
-            placeholder="Key Name (e.g. Main Website)"
-            value={newKeyName}
-            onChange={(e) => setNewKeyName(e.target.value)}
-            className="flex-1 bg-black border border-gray-800 rounded-md px-4 py-3 text-white focus:outline-none focus:border-yellow-500 w-full"
-          />
-          <button
-            type="submit"
-            disabled={generating}
-            className="bg-gradient-to-r from-yellow-600 to-yellow-400 hover:from-yellow-500 hover:to-yellow-300 text-black px-6 py-3 rounded-md font-bold uppercase tracking-widest shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all whitespace-nowrap w-full sm:w-auto"
-          >
-            {generating ? 'Generating...' : 'Generate Auto Key'}
-          </button>
-        </form>
+    <div className="space-y-6">
+      <div className="flex justify-between items-end">
+        <div>
+          <h1 className="text-3xl font-black uppercase tracking-widest text-yellow-500">Live Dashboard</h1>
+          <p className="text-gray-400 mt-1 text-sm tracking-widest uppercase">Kalvix Nexus Control Center</p>
+        </div>
+        <div className="font-mono text-xl text-white bg-gray-900 border border-gray-800 px-4 py-2 rounded-lg">
+          {currentTime || '00:00:00'}
+        </div>
       </div>
 
-      {/* API Keys List */}
-      <div className="bg-gray-900 border border-gray-800 rounded-xl shadow-lg overflow-hidden mb-10">
-        <div className="p-6 border-b border-gray-800 bg-black">
-          <h2 className="text-xl font-bold text-white uppercase tracking-widest">Your API Keys</h2>
-          <p className="text-xs text-gray-500 mt-1">Do not share your API keys in publicly accessible areas.</p>
-        </div>
-        
-        {apiKeys.length === 0 ? (
-          <div className="p-12 text-center text-gray-500">
-            No API keys generated yet. Create one above to connect your website.
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {[
+          { label: 'Revenue (Today)', value: '₹42,500', trend: '+12%', color: 'text-green-500' },
+          { label: 'Orders / Hr', value: '48', trend: '+5%', color: 'text-green-500' },
+          { label: 'Avg Delivery Time', value: '14m', trend: '-2m', color: 'text-green-500' },
+          { label: 'Active Robots', value: '3 / 4', trend: 'Optimal', color: 'text-yellow-500' },
+        ].map((kpi, i) => (
+          <div key={i} className="bg-black border border-gray-800 rounded-xl p-5 shadow-lg relative overflow-hidden group hover:border-gray-600 transition-colors">
+            <h3 className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-2">{kpi.label}</h3>
+            <div className="flex justify-between items-end">
+              <span className="text-2xl font-black">{kpi.value}</span>
+              <span className={`text-xs font-bold ${kpi.color} bg-gray-900 px-2 py-1 rounded`}>{kpi.trend}</span>
+            </div>
+            <div className="absolute -bottom-2 -right-2 text-yellow-500/10 group-hover:text-yellow-500/20 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-20 w-20" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2L2 22h20L12 2zm0 3.83L18.17 19H5.83L12 5.83z" />
+              </svg>
+            </div>
           </div>
-        ) : (
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Live Orders Feed */}
+        <div className="bg-gray-900 border border-gray-800 rounded-xl p-5 lg:col-span-2">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-bold uppercase tracking-widest">Live Orders Feed</h2>
+            <span className="flex items-center gap-2 text-xs font-bold text-green-500 bg-green-500/10 px-2 py-1 rounded">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+              LIVE
+            </span>
+          </div>
+          
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-gray-300">
-              <thead className="bg-gray-900 border-b border-gray-800 text-xs uppercase tracking-wider text-gray-500">
-                <tr>
-                  <th className="px-6 py-4 font-bold">Key Name</th>
-                  <th className="px-6 py-4 font-bold">API Key</th>
-                  <th className="px-6 py-4 font-bold">Created</th>
-                  <th className="px-6 py-4 font-bold text-right">Actions</th>
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-gray-800 text-xs uppercase tracking-wider text-gray-500">
+                  <th className="p-3">Order ID</th>
+                  <th className="p-3">Source / Table</th>
+                  <th className="p-3">Items</th>
+                  <th className="p-3">Status</th>
+                  <th className="p-3 text-right">Amount</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-800 bg-black/50">
-                {apiKeys.map((keyObj) => (
-                  <tr key={keyObj.id} className="hover:bg-gray-800/50 transition-colors">
-                    <td className="px-6 py-4 font-bold text-white">{keyObj.name}</td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <div className="font-mono text-xs text-yellow-500 bg-yellow-500/10 px-3 py-1 rounded inline-block border border-yellow-500/20">
-                          {keyObj.key}
-                        </div>
-                        <button
-                          onClick={() => {
-                            navigator.clipboard.writeText(keyObj.key);
-                            alert('API Key copied to clipboard!');
-                          }}
-                          className="text-gray-400 hover:text-yellow-500 transition-colors p-1"
-                          title="Copy API Key"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                          </svg>
-                        </button>
-                      </div>
+              <tbody className="text-sm">
+                {[
+                  { id: '#1042', source: 'Table 4', items: '2x Burger, 1x Cola', status: 'Preparing', amt: '₹450', color: 'text-yellow-500' },
+                  { id: '#1043', source: 'API / Zomato', items: '1x Pizza, 2x Fries', status: 'Ready', amt: '₹850', color: 'text-green-500' },
+                  { id: '#1044', source: 'Table 12', items: '3x Pasta, 3x Mojito', status: 'Delivering', amt: '₹1200', color: 'text-blue-500' },
+                  { id: '#1045', source: 'Table 2', items: '1x Salad', status: 'Accepted', amt: '₹250', color: 'text-gray-300' },
+                ].map((order, i) => (
+                  <tr key={i} className="border-b border-gray-800/50 hover:bg-black transition-colors">
+                    <td className="p-3 font-mono font-bold text-gray-300">{order.id}</td>
+                    <td className="p-3 font-bold">{order.source}</td>
+                    <td className="p-3 text-gray-400 text-xs">{order.items}</td>
+                    <td className="p-3 font-bold">
+                      <span className={`${order.color} bg-gray-900 px-2 py-1 rounded text-xs uppercase tracking-wider`}>
+                        {order.status}
+                      </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-400">
-                      {new Date(keyObj.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <button 
-                        onClick={() => deleteKey(keyObj.id)}
-                        className="text-red-500 hover:text-red-400 font-bold uppercase text-xs bg-red-500/10 px-3 py-1 rounded transition-colors"
-                      >
-                        Revoke
-                      </button>
+                    <td className="p-3 text-right font-bold">
+                      {order.amt}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-        )}
-      </div>
+        </div>
 
-      {/* Developer Instructions */}
-      <div className="p-6 bg-gray-900 border border-yellow-500/30 rounded-xl shadow-[0_0_20px_rgba(212,175,55,0.05)]">
-        <h3 className="font-bold text-lg mb-2 text-yellow-500 uppercase tracking-widest flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-          </svg>
-          Developer Instructions
-        </h3>
-        <p className="text-sm text-gray-400 mb-4">
-          Send orders from your public website to this POS automatically using your unique API Key.
-        </p>
-        
-        <div className="relative group mt-4">
-          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-            <button 
-              onClick={() => {
-                const code = `### Hello Developer,
-We have integrated Kalvix Nexus POS for billing. Whenever a successful order is placed on the website, push it to our POS using the function below.
-
-// Replace with the unique API Key from the POS
-const API_KEY = "${apiKeys.length > 0 ? apiKeys[apiKeys.length - 1].key : 'YOUR_API_KEY'}"; 
-// The actual domain where Kalvix Nexus POS is hosted
-const POS_BASE_URL = "https://knospos.vercel.app"; 
-
-async function sendOrderToKalvixPOS(customerInfo, cartItems, totalAmount) {
-  try {
-    const response = await fetch(\`\${POS_BASE_URL}/api/external/orders\`, {
-      method: "POST",
-      headers: {
-        "Authorization": \`Bearer \${API_KEY}\`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        customerName: customerInfo.name,          // e.g., "Vikram Singh"
-        customerPhone: customerInfo.phone || "",  // e.g., "9876543210"
-        paymentMode: customerInfo.paymentMethod,  // e.g., "UPI", "Card", "Cash"
-        totalAmount: totalAmount,                 // e.g., 1050
-        
-        items: cartItems.map(item => ({
-          id: item.id || Date.now(),
-          name: item.name,                        // e.g., "Burger"
-          price: Number(item.price),              // e.g., 150
-          qty: Number(item.quantity)              // e.g., 2
-        }))
-      })
-    });
-
-    const data = await response.json();
-    if (response.ok) console.log("✅ Order sent to POS successfully! Order ID:", data.orderId);
-    else console.error("❌ Failed to send order to POS:", data.error);
-  } catch (error) {
-    console.error("❌ API Connection Error:", error);
-  }
-}`;
-                navigator.clipboard.writeText(code);
-                alert('Ready-made code copied! Send this directly to your developer.');
-              }}
-              className="bg-yellow-500 hover:bg-yellow-400 text-black p-2 rounded-md border border-yellow-600 text-xs font-bold flex items-center gap-1 shadow-lg transition-colors"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-              COPY FULL MESSAGE FOR DEVELOPER
-            </button>
-          </div>
-          <div className="bg-black border border-gray-800 p-5 rounded-md font-mono text-sm text-gray-300 overflow-x-auto shadow-inner relative">
-            <div className="text-gray-500 mb-4 whitespace-pre-wrap">
-{`### Hello Developer,
-We have integrated Kalvix Nexus POS for billing. Whenever a successful order is placed on the website, push it to our POS using the function below.`}
+        {/* Right Sidebar */}
+        <div className="space-y-6">
+          
+          {/* Active Tables Overview */}
+          <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400">Active Tables</h2>
+              <span className="text-xs font-bold bg-yellow-500/20 text-yellow-500 px-2 py-1 rounded">6 / 15</span>
             </div>
-            
-            <div className="text-green-400 mb-1">// Replace with the unique API Key from the POS</div>
-            <div>
-              <span className="text-blue-300">const</span> <span className="text-white">API_KEY</span> <span className="text-pink-400">=</span> <span className="text-yellow-200">"{apiKeys.length > 0 ? <span className="text-yellow-500 font-bold">{apiKeys[apiKeys.length - 1].key}</span> : 'YOUR_API_KEY'}"</span>;
-            </div>
-            
-            <div className="text-green-400 mt-2 mb-1">// The actual domain where Kalvix Nexus POS is hosted</div>
-            <div>
-              <span className="text-blue-300">const</span> <span className="text-white">POS_BASE_URL</span> <span className="text-pink-400">=</span> <span className="text-yellow-200">"https://knospos.vercel.app"</span>;
-            </div>
-            <br />
-            <div>
-              <span className="text-blue-300">async function</span> <span className="text-yellow-100">sendOrderToKalvixPOS</span>(customerInfo, cartItems, totalAmount) {'{'}
-            </div>
-            <div className="pl-4">
-              <span className="text-blue-300">try</span> {'{'}
-              <div className="pl-4">
-                <span className="text-blue-300">const</span> response <span className="text-pink-400">=</span> <span className="text-blue-300">await</span> <span className="text-yellow-100">fetch</span>(<span className="text-yellow-200">{"`${POS_BASE_URL}/api/external/orders`"}</span>, {'{'}
-                <div className="pl-4">
-                  method: <span className="text-yellow-200">"POST"</span>,<br/>
-                  headers: {'{'}
-                  <div className="pl-4">
-                    <span className="text-yellow-200">"Authorization"</span>: <span className="text-yellow-200">{"`Bearer ${API_KEY}`"}</span>,<br/>
-                    <span className="text-yellow-200">"Content-Type"</span>: <span className="text-yellow-200">"application/json"</span>
+            <div className="grid grid-cols-5 gap-2">
+              {Array.from({ length: 15 }).map((_, i) => {
+                const isActive = [2, 4, 7, 8, 12, 14].includes(i + 1);
+                return (
+                  <div 
+                    key={i} 
+                    className={`aspect-square flex items-center justify-center rounded text-xs font-bold transition-all ${
+                      isActive ? 'bg-yellow-500 text-black shadow-[0_0_10px_rgba(212,175,55,0.4)]' : 'bg-black border border-gray-800 text-gray-600'
+                    }`}
+                  >
+                    T{i + 1}
                   </div>
-                  {'}'},<br/>
-                  body: <span className="text-white">JSON</span>.<span className="text-yellow-100">stringify</span>({'{'}
-                  <div className="pl-4">
-                    customerName: customerInfo.name, <span className="text-gray-500">// e.g., "Vikram Singh"</span><br/>
-                    customerPhone: customerInfo.phone <span className="text-pink-400">||</span> <span className="text-yellow-200">""</span>, <span className="text-gray-500">// e.g., "9876543210"</span><br/>
-                    paymentMode: customerInfo.paymentMethod, <span className="text-gray-500">// e.g., "UPI", "Card", "Cash"</span><br/>
-                    totalAmount: totalAmount, <span className="text-gray-500">// e.g., 1050</span><br/><br/>
-                    items: cartItems.<span className="text-yellow-100">map</span>(item <span className="text-blue-300">=&gt;</span> ({'{'}
-                    <div className="pl-4">
-                      id: item.id <span className="text-pink-400">||</span> <span className="text-white">Date</span>.<span className="text-yellow-100">now</span>(),<br/>
-                      name: item.name, <span className="text-gray-500">// e.g., "Burger"</span><br/>
-                      price: <span className="text-white">Number</span>(item.price), <span className="text-gray-500">// e.g., 150</span><br/>
-                      qty: <span className="text-white">Number</span>(item.quantity) <span className="text-gray-500">// e.g., 2</span>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Robot Status Widget */}
+          <div className="bg-black border border-gray-800 rounded-xl p-5 shadow-lg">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Robot Fleet Status</h2>
+            <div className="space-y-3">
+              {[
+                { name: 'Nexus-01', state: 'Delivering to T12', battery: '82%', statusColor: 'bg-blue-500' },
+                { name: 'Nexus-02', state: 'Idle at Station', battery: '100%', statusColor: 'bg-green-500' },
+                { name: 'Nexus-03', state: 'Returning', battery: '45%', statusColor: 'bg-yellow-500' },
+                { name: 'Nexus-04', state: 'Charging', battery: '12%', statusColor: 'bg-orange-500' },
+              ].map((robot, i) => (
+                <div key={i} className="flex justify-between items-center bg-gray-900 p-2 rounded border border-gray-800">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-2 h-2 rounded-full ${robot.statusColor} animate-pulse`}></div>
+                    <div>
+                      <div className="font-bold text-xs uppercase tracking-wider">{robot.name}</div>
+                      <div className="text-[10px] text-gray-400 uppercase tracking-widest">{robot.state}</div>
                     </div>
-                    {'}))'}
                   </div>
-                  {'}'})
+                  <div className="text-xs font-mono text-gray-400">
+                    🔋 {robot.battery}
+                  </div>
                 </div>
-                {'});'}
-              </div>
-              {'}'} <span className="text-blue-300">catch</span> (error) {'{'}
-              <div className="pl-4 text-gray-500">// Handle Error</div>
-              {'}'}
+              ))}
             </div>
-            {'}'}
           </div>
+
         </div>
       </div>
-
+      
     </div>
   );
 }
